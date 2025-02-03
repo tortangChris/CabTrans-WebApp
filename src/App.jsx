@@ -6,12 +6,14 @@ import HowToUse from "./Pages/HowToUse";
 import ModeOfTransportation from "./Pages/ModeOfTransportation";
 import TricRoute from "./Pages/TricRoute";
 import WalkingPath from "./Pages/WalkingPath";
+import NavBar from "./Components/NavBar";
 
 const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<NavBar />} />
+        <Route path="/home" element={<HomePage />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/how-to-use" element={<HowToUse />} />
         <Route path="/mode-of-transport" element={<ModeOfTransportation />} />
