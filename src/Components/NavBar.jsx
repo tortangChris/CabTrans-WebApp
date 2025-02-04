@@ -31,7 +31,7 @@ const NavBar = () => {
           className="sm:block md:block lg:hidden text-white focus:outline-none"
           onClick={toggleMenu}
         >
-          <span className="text-xl">&#9776;</span> {/* Hamburger Icon */}
+          <span className="text-xl">&#9776;</span>
         </button>
 
         <div className={`hidden sm:flex md:flex lg:flex space-x-6`}>
@@ -41,31 +41,13 @@ const NavBar = () => {
           >
             How To Use?
           </a>
-          <div className="relative">
-            <button
-              className="text-white hover:text-gray-400 flex items-center px-4 py-2"
-              onClick={() => toggleDropdown("settings")}
-            >
-              Settings
-              <span className="ml-2">&#9662;</span>
-            </button>
-            {activeDropdown === "settings" && (
-              <div className="absolute right-0 mt-2 bg-gray-800 text-white p-4 rounded shadow-md text-sm whitespace-nowrap">
-                <a
-                  href="/app-settings"
-                  className="block px-4 py-2 hover:bg-gray-700"
-                >
-                  App Settings
-                </a>
-                <a
-                  href="/instruction"
-                  className="block px-4 py-2 hover:bg-gray-700"
-                >
-                  Instruction
-                </a>
-              </div>
-            )}
-          </div>
+
+          <a
+            href="/settings"
+            className="text-white hover:text-gray-400 px-4 py-2"
+          >
+            Settings
+          </a>
 
           <div className="relative">
             <button
