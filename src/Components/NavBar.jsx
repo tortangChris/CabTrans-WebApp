@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const NavBar = () => {
   const [activeDropdown, setActiveDropdown] = useState(null);
-  const [menuOpen, setMenuOpen] = useState(false); // State for burger menu toggle
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleDropdown = (dropdown) => {
     setActiveDropdown(activeDropdown === dropdown ? null : dropdown);
@@ -15,19 +16,17 @@ const NavBar = () => {
   return (
     <nav className="bg-black p-2 sm:p-6 md:p-6 lg:p-1">
       <div className="container mx-auto flex justify-between items-center">
-        {/* Logo */}
-        <img
-          src="/CabuTrans.png"
-          alt="CabuTrans Logo"
-          className="h-8 sm:h-8 md:h-10 lg:h-16"
-        />
+        <Link to="/home" className="flex items-center">
+          <img
+            src="/CabuTrans.png"
+            alt="CabuTrans Logo"
+            className="h-8 sm:h-8 md:h-10 lg:h-16"
+          />
+          <h1 className="text-white text-lg sm:text-m md:text-lg lg:text-xl font-semibold ml-2">
+            CabuTrans
+          </h1>
+        </Link>
 
-        {/* Title */}
-        <h1 className="text-white text-lg sm:text-m md:text-lg lg:text-xl font-semibold mr-auto">
-          CabuTrans
-        </h1>
-
-        {/* Burger Button */}
         <button
           className="sm:block md:block lg:hidden text-white focus:outline-none"
           onClick={toggleMenu}
@@ -35,7 +34,6 @@ const NavBar = () => {
           <span className="text-xl">&#9776;</span> {/* Hamburger Icon */}
         </button>
 
-        {/* Desktop Navigation */}
         <div className={`hidden sm:flex md:flex lg:flex space-x-6`}>
           <a
             href="/how-to-use"
@@ -97,7 +95,6 @@ const NavBar = () => {
         </div>
       </div>
 
-      {/* Mobile Navigation */}
       {menuOpen && (
         <div
           className={`sm:block md:block lg:hidden bg-black p-4 space-y-4 text-center border-2 border-gray-400 rounded-lg`}
