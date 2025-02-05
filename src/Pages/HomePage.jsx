@@ -1,10 +1,16 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const navigate = useNavigate(); // Hook for navigation
 
   const toggleDropdown = (item) => {
     setActiveDropdown(activeDropdown === item ? null : item);
+  };
+
+  const handleGetStarted = () => {
+    navigate("/mode-of-transport"); // Navigate to the specified route
   };
 
   return (
@@ -35,7 +41,10 @@ const HomePage = () => {
             <p className="text-center text-gray-600 py-30">Maps</p>
           </div>
         </div>
-        <button className="w-full py-2 bg-black text-white font-bold rounded-lg hover:bg-gray-800">
+        <button
+          className="w-full py-2 bg-black text-white font-bold rounded-lg hover:bg-gray-800"
+          onClick={handleGetStarted} // Call navigation function
+        >
           Get Started
         </button>
       </div>
