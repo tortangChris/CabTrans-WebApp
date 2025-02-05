@@ -29,6 +29,17 @@ const HomePage = () => {
         </h1>
       </div>
 
+      <div className="container p-4 mx-auto bg-white shadow-lg rounded-lg mb-6">
+        <div className="bg-gray-100 p-4 rounded-lg mb-4 shadow-sm">
+          <div className="bg-gray-300 h-64 rounded-lg">
+            <p className="text-center text-gray-600 py-30">Maps</p>
+          </div>
+        </div>
+        <button className="w-full py-2 bg-black text-white font-bold rounded-lg hover:bg-gray-800">
+          Get Started
+        </button>
+      </div>
+
       <div className="container p-4 mx-auto bg-white shadow-lg rounded-lg">
         <h1 className="text-2xl font-bold mb-4">Why Choose CabuTrans?</h1>
         <div className="mt-6">
