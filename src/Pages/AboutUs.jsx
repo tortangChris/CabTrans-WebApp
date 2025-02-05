@@ -11,7 +11,45 @@ const About = () => {
         </div>
 
       <div className="max-w-5xl w-full bg-[#FFFFFF] shadow-lg rounded-xl p-6 sm:p-10 mt-8 text-center">
-      
+      <h2 className="text-3xl font-bold text-gray-800">About The Team</h2>
+        <p className="text-gray-700 mt-2">Meet the Developers</p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
+          {[
+            {
+              name: "Chris Ashley C. Eliserio",
+              role: "Frontend & Backend Developer",
+              img: "/chris.png",
+            },
+            {
+              name: "Rochelle V. Gragasin",
+              role: "Frontend Developer",
+              img: "/rochelle.png",
+            },
+            {
+              name: "Jermel S. Hernandez",
+              role: "Frontend Developer",
+              img: "/jermel.png",
+            },
+            {
+              name: "Sherwin P. Corrales",
+              role: "Frontend Developer",
+              img: "/sherwin.png",
+            },
+          ].map((dev, index) => (
+            <div key={index} className="flex flex-col items-center p-4 bg-gray-100 rounded-lg shadow-md">
+              <img
+                src={dev.img}
+                alt={dev.name}
+                className="w-24 h-24 rounded-full border-4 border-gray-500"
+              />
+              <h3 className="mt-4 text-lg font-semibold text-gray-800">{dev.name}</h3>
+              <p className="text-gray-700 text-sm">3rd Year ComSci Student</p>
+              <p className="text-gray-600 text-sm text-center">{dev.role}</p>
+            </div>
+          ))}
+        </div>
+
       </div>
 
       <div className="max-w-5xl w-full bg-[#FFFFFF] shadow-lg rounded-xl p-6 sm:p-10 mt-8 text-center"></div>
