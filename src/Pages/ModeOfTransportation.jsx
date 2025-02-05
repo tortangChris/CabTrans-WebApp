@@ -10,7 +10,13 @@ const ModeOfTransportation = () => {
     navigate(-1);
   };
 
-  const handleConfirm = () => {};
+  const handleConfirm = () => {
+    if (selectedMode === "Walking") {
+      navigate("/walking-path");
+    } else if (selectedMode === "Tricycle") {
+      navigate("/tricycle-route");
+    }
+  };
 
   const toggleSelection = (mode) => {
     if (selectedMode === mode) {
