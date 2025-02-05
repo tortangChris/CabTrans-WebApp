@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -35,9 +36,12 @@ const HomePage = () => {
             <p className="text-center text-gray-600 py-30">Maps</p>
           </div>
         </div>
-        <button className="w-full py-2 bg-black text-white font-bold rounded-lg hover:bg-gray-800">
-          Get Started
-        </button>
+          <Link to="/mode-of-transport">
+            <button className="w-full py-2 bg-black text-white font-bold rounded-lg hover:bg-gray-800" >
+              Get Started
+            </button>
+          </Link>
+        
       </div>
 
       <div className="container p-4 mx-auto bg-white shadow-lg rounded-lg">
