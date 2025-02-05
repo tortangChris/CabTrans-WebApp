@@ -11,7 +11,7 @@ const About = () => {
 
       <div className="max-w-5xl w-full bg-[#FFFFFF] shadow-lg rounded-xl p-6 sm:p-10 mt-8 text-center"></div>
 
-      <div className="mt-6"></div>
+      <div className="mt-5"></div>
     </div>
   );
 };
