@@ -1,71 +1,81 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft, Info } from "lucide-react";
 
-const ModeOfTransportation = ({ hasNavigation }) => {
+const ModeOfTransportation = () => {
+  const navigate = useNavigate();
   const [selectedMode, setSelectedMode] = useState(null);
-  const navigate = useNavigate(); // useNavigate hook to handle routings 
 
-  const toggleSelection = (mode) => {
-    setSelectedMode(selectedMode === mode ? null : mode);
+  const handleBack = () => {
+    navigate(-1);
   };
 
-  // Handle the confirm button click to navigate to the correct page
-  const handleConfirm = () => {
-    if (selectedMode === 'Walk') {
-      navigate("/walking-path"); // Navigate to the walking path
-    } else if (selectedMode === 'Tricycle') {
-      navigate("/tricycle-path"); // Navigate to the tricycle path
+  const handleConfirm = () => {};
+
+  const toggleSelection = (mode) => {
+    if (selectedMode === mode) {
+      setSelectedMode(null);
+    } else {
+      setSelectedMode(mode);
     }
   };
 
   return (
-    <div className="main-page h-screen flex flex-col">
-      {/* Top Bar */}
-      <div
-        className={`bg-white text-black h-[50px] w-full flex items-center justify-between fixed ${hasNavigation ? 'top-[50px]' : 'top-0'} shadow-md px-4 transition-all duration-300 font-bold z-50`}
-      >
-        <div className="flex items-center">
-          <Link to="/home" className="mr-2 font-bold">&lt;</Link>
-          Choose your Mode of Transportation
-        </div>
-        <div className="flex items-center">
-          <h1 className="text-black text-lg sm:text-m md:text-lg lg:text-xl font-semibold ml-2">
-            CabuTrans
-          </h1>
-          <img
-            src="/CabuTrans.png"
-            alt="CabuTrans Logo"
-            className="h-18 sm:h-8 md:h-10 lg:h-16"
-          />
-        </div>
+    <div className="bg-gray-100 min-h-screen px-4 py-6 flex flex-col">
+      <div className="container flex items-center mx-auto bg-white shadow-lg rounded-lg mb-6 p-4">
+        <button
+          className="flex items-center justify-center bg-gray-200 rounded-full hover:bg-gray-300 transition"
+          onClick={handleBack}
+          style={{
+            width: "3.5rem",
+            height: "3.5rem",
+          }}
+        >
+          <ArrowLeft size={24} />
+        </button>
+        <h1 className="text-xl lg:text-2xl xl:text-3xl font-bold ml-4">
+          Choose your mode of transportation
+        </h1>
       </div>
 
-      {/* Main Body */}
-      <div className="body flex-grow flex items-center justify-center bg-gray-100 mt-[50px] sm:mt-[100px] px-4">
-        <div className="flex flex-col gap-4 items-center w-full max-w-[400px]">
-          <button 
-            className={`w-[90%] sm:w-[80%] md:w-[70%] lg:w-[60%] py-[5vh] min-w-[200px] rounded-lg shadow-md ${selectedMode === 'Walk' ? 'bg-green-500 text-white' : 'bg-black text-white hover:bg-green-500'}`} 
-            onClick={() => toggleSelection('Walk')}
+      <div className="container mx-auto bg-white shadow-lg rounded-lg p-6 flex flex-col items-center justify-between space-y-4 flex-grow">
+        <button
+          className={`w-full sm:w-72 md:w-96 lg:w-180 h-40 rounded-lg text-white font-bold text-center ${
+            selectedMode === "Walking" ? "bg-black" : "bg-gray-400"
+          } hover:bg-black transition`}
+          onClick={() => toggleSelection("Walking")}
+        >
+          Walking
+        </button>
+
+        <button
+          className={`w-full sm:w-72 md:w-96 lg:w-180 h-40 rounded-lg text-white font-bold text-center ${
+            selectedMode === "Tricycle" ? "bg-black" : "bg-gray-400"
+          } hover:bg-black transition`}
+          onClick={() => toggleSelection("Tricycle")}
+        >
+          Tricycle
+        </button>
+
+        <div className="w-full flex justify-center mt-4 text-red-600 mb-4">
+          <Info size={24} className="mr-2" />
+          <span className="font-semibold">Choice 1: Your selected route</span>
+        </div>
+
+        <div className="w-full flex justify-center mt-auto">
+          <button
+            className={`w-full sm:w-72 md:w-96 lg:w-300 py-3 px-8 ${
+              selectedMode
+                ? "bg-black hover:bg-gray-800"
+                : "bg-gray-400 cursor-not-allowed"
+            } text-white font-bold rounded-lg transition`}
+            onClick={handleConfirm}
+            disabled={!selectedMode}
           >
-            Walking
-          </button>
-          <button 
-            className={`w-[90%] sm:w-[80%] md:w-[70%] lg:w-[60%] py-[5vh] min-w-[200px] rounded-lg shadow-md ${selectedMode === 'Tricycle' ? 'bg-green-500 text-white' : 'bg-black text-white hover:bg-green-500'}`} 
-            onClick={() => toggleSelection('Tricycle')}
-          >
-            Tricycle
+            Confirm
           </button>
         </div>
       </div>
-
-      {/* Confirm Button stays fixed at the bottom */}
-      <button 
-        className="w-[90%] sm:w-[80%] md:w-[70%] lg:w-[60%] py-[1.8vh] bg-black text-white rounded-lg shadow-md disabled:bg-gray-400 fixed bottom-10 left-1/2 transform -translate-x-1/2"
-        disabled={!selectedMode}
-        onClick={handleConfirm} // Handle navigation on button click
-      >
-        Confirm
-      </button>
     </div>
   );
 };
