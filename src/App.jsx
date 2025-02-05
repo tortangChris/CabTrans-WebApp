@@ -12,6 +12,7 @@ import ModeOfTransportation from "./Pages/ModeOfTransportation";
 import TricRoute from "./Pages/TricRoute";
 import WalkingPath from "./Pages/WalkingPath";
 import NavBar from "./Components/NavBar";
+import Settings from "./Pages/Settings"; // Import Settings page
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
         <Route path="/mode-of-transport" element={<ModeOfTransportation />} />
         <Route path="/tricycle-route" element={<TricRoute />} />
         <Route path="/walking-path" element={<WalkingPath />} />
+        <Route path="/settings" element={<Settings />} /> {/* Add Settings Route */}
       </Routes>
     </Router>
   );
