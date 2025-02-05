@@ -52,9 +52,11 @@ const About = () => {
 
       </div>
 
-      <div className="max-w-5xl w-full bg-[#FFFFFF] shadow-lg rounded-xl p-6 sm:p-10 mt-8 text-center"></div>
-
-      <div className="mt-5"></div>
+      <div className="max-w-5xl w-full bg-[#FFFFFF] shadow-lg rounded-xl p-6 sm:p-10 mt-8 text-center">
+        <p className="text-gray-700 text-justify">
+          CabuTrans was developed by a dedicated team of 3rd-year BS Computer Science students from Pamantasan ng Cabuyao, aiming to improve the city's transportation system. Combining their skills in frontend and backend development, they created a user-friendly, efficient, and reliable mobile application.
+        </p>
+      </div>
     </div>
   );
 };
