@@ -20,13 +20,13 @@ const Settings = () => {
             <div
               className={`relative flex items-center cursor-pointer transition-all 
                 ${notifications ? 'bg-blue-500' : 'bg-gray-400'}
-                w-12 h-6 sm:w-14 sm:h-7 md:w-16 md:h-8 lg:w-12 lg:h-6 rounded-full`}
+                w-12 h-6 sm:w-14 sm:h-7 md:w-12 md:h-6 lg:w-12 lg:h-6 rounded-full`}
               onClick={handleNotificationChange}
             >
               <div
                 className={`absolute bg-white rounded-full shadow-md transform transition-all 
-                  w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-5 lg:h-5 
-                  ${notifications ? 'translate-x-6 sm:translate-x-7 md:translate-x-8 lg:translate-x-7' : 'translate-x-1'}`}
+                  w-5 h-5 sm:w-6 sm:h-6 md:w-5 md:h-5 lg:w-5 lg:h-5 
+                  ${notifications ? 'translate-x-6 sm:translate-x-7 md:translate-x-6 lg:translate-x-7' : 'translate-x-1'}`}
               />
             </div>
             <span className="text-gray-700 text-sm sm:text-base md:text-lg font-semibold">
