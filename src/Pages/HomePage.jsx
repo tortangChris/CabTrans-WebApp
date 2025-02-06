@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import { useNavigate } from "react-router-dom";
+import { GoogleMap, useLoadScript } from '@react-google-maps/api';
 
 const HomePage = () => {
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -12,6 +13,9 @@ const HomePage = () => {
   const handleGetStarted = () => {
     navigate("/mode-of-transport"); // Navigate to the specified route
   };
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY
+  })
 
   return (
     <div className="bg-gray-100 min-h-screen px-4 py-6">
@@ -37,9 +41,24 @@ const HomePage = () => {
 
       <div className="container p-4 mx-auto bg-white shadow-lg rounded-lg mb-6">
         <div className="bg-gray-100 p-4 rounded-lg mb-4 shadow-sm">
-          <div className="bg-gray-300 h-64 rounded-lg">
-            <p className="text-center text-gray-600 py-30">Maps</p>
+          <div className="bg-gray-500 h-64 rounded-lg">
+                { 
+                  isLoaded ?(
+                    <GoogleMap
+                center={{ lat: 14.25958990208862, lng: 121.13384390178402}}
+                zoom={17}
+                mapContainerStyle={{
+                  width: "100%",
+                  height: "30vh",
+                }}
+                >
+                </GoogleMap>
+                  ) : null
+                }
+
+
           </div>
+
         </div>
         <button
           className="w-full py-2 bg-black text-white font-bold rounded-lg hover:bg-gray-800"
