@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Info } from "lucide-react"; // Add Info icon
 
 const TricyclePath = () => {
   const navigate = useNavigate();
@@ -63,6 +63,11 @@ const TricyclePath = () => {
           <div className="h-full bg-gray-400 flex items-center justify-center text-white font-bold">
             Map Placeholder
           </div>
+        </div>
+
+        <div className="w-full bg-gray-800 text-white p-4 mb-4 rounded-lg flex items-center">
+          <Info size={24} className="mr-2" />
+          <span>Please select a route from the list below to proceed.</span>
         </div>
 
         <div className="w-full bg-white shadow-md rounded-lg p-4 mb-4">
