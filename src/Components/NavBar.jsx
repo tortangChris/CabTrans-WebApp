@@ -50,7 +50,9 @@ const NavBar = () => {
             <button
               className="text-white hover:text-gray-400 flex items-center px-4 py-2"
             >
-              About Us
+              <Link to="/about" className="text-white">
+                About Us
+              </Link>
               <span className="ml-2">&#9662;</span>
             </button>
           </div>
