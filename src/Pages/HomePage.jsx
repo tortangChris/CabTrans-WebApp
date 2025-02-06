@@ -55,10 +55,7 @@ const HomePage = () => {
                 </GoogleMap>
                   ) : null
                 }
-
-
           </div>
-
         </div>
         <button
           className="w-full py-2 bg-black text-white font-bold rounded-lg hover:bg-gray-800"
