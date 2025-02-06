@@ -19,14 +19,13 @@ const App = () => {
     <Router>
       <NavBar />
       <Routes>
-        <Route path="/" element={<Navigate to="/about" />} />
+        <Route path="/" element={<Navigate to="/home" />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/about" element={<AboutUs />} />
-        <Route path="/how-to-use" element={<HowToUse />} />
         <Route path="/mode-of-transport" element={<ModeOfTransportation />} />
         <Route path="/tricycle-route" element={<TricRoute />} />
         <Route path="/walking-path" element={<WalkingPath />} />
-        <Route path="/settings" element={<Settings />} /> {/* Add Settings Route */}
+        <Route path="/settings" element={<Settings />} />
       </Routes>
     </Router>
   );

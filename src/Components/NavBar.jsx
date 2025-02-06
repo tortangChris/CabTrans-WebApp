@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { Settings, Info } from "lucide-react";
 
 const NavBar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -26,34 +27,25 @@ const NavBar = () => {
           className="sm:block md:block lg:hidden text-white focus:outline-none"
           onClick={toggleMenu}
         >
-          <span className="text-xl">&#9776;</span> {/* Hamburger Icon */}
+          <span className="text-xl">&#9776;</span>
         </button>
 
         <div className={`hidden sm:flex md:flex lg:flex space-x-6`}>
-          <a
-            href="/how-to-use"
-            className="text-white hover:text-gray-400 px-4 py-2"
-          >
-            How To Use?
-          </a>
           <div className="relative">
-            <button
-              className="text-white hover:text-gray-400 flex items-center px-4 py-2"
-            >
-              <Link to="/settings" className="text-white">
+            <button className="text-white hover:text-gray-400 flex items-center px-4 py-2">
+              <Link to="/settings" className="text-white flex items-center">
+                <Settings className="mr-2 text-sm sm:text-base md:text-lg lg:text-xl" />{" "}
                 Settings
               </Link>
             </button>
           </div>
 
           <div className="relative">
-            <button
-              className="text-white hover:text-gray-400 flex items-center px-4 py-2"
-            >
-              <Link to="/about" className="text-white">
+            <button className="text-white hover:text-gray-400 flex items-center px-4 py-2">
+              <Link to="/about" className="text-white flex items-center">
+                <Info className="mr-2 text-sm sm:text-base md:text-lg lg:text-xl" />{" "}
                 About Us
               </Link>
-              <span className="ml-2">&#9662;</span>
             </button>
           </div>
         </div>
@@ -61,25 +53,20 @@ const NavBar = () => {
 
       {menuOpen && (
         <div className="sm:block md:block lg:hidden bg-black p-4 space-y-4 text-center border-2 border-gray-400 rounded-lg">
-          <a
-            href="/how-to-use"
-            className="text-white hover:text-gray-400 block px-4 py-2"
-          >
-            How To Use?
-          </a>
           <div className="relative">
             <button className="text-white hover:text-gray-400 flex items-center justify-center w-full">
-              <Link to="/settings" className="text-white">
+              <Link to="/settings" className="text-white flex items-center">
+                <Settings className="mr-2 text-sm sm:text-base md:text-lg lg:text-xl" />{" "}
                 Settings
               </Link>
             </button>
           </div>
           <div className="relative">
-            <button
-              className="text-white hover:text-gray-400 flex items-center justify-center w-full"
-            >
-              About Us
-              <span className="ml-2">&#9662;</span>
+            <button className="text-white hover:text-gray-400 flex items-center justify-center w-full">
+              <Link to="/about" className="text-white flex items-center">
+                <Info className="mr-2 text-sm sm:text-base md:text-lg lg:text-xl" />{" "}
+                About
+              </Link>
             </button>
           </div>
         </div>
