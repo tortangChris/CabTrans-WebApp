@@ -7,7 +7,6 @@ import {
 } from "react-router-dom";
 import HomePage from "./Pages/HomePage";
 import AboutUs from "./Pages/AboutUs";
-import HowToUse from "./Pages/HowToUse";
 import ModeOfTransportation from "./Pages/ModeOfTransportation";
 import TricRoute from "./Pages/TricRoute";
 import WalkingPath from "./Pages/WalkingPath";

@@ -10,21 +10,21 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="bg-black p-2 sm:p-6 md:p-6 lg:p-1">
+    <nav className="bg-black p-4 sm:p-4 md:p-6 lg:p-4">
       <div className="container mx-auto flex justify-between items-center">
         <Link to="/home" className="flex items-center">
           <img
             src="/CabuTrans.png"
             alt="CabuTrans Logo"
-            className="h-8 sm:h-8 md:h-10 lg:h-16"
+            className="h-10 sm:h-8 md:h-10 lg:h-16"
           />
-          <h1 className="text-white text-lg sm:text-m md:text-lg lg:text-xl font-semibold ml-2">
+          <h1 className="text-white text-lg sm:text-lg md:text-xl lg:text-2xl font-semibold ml-2">
             CabuTrans
           </h1>
         </Link>
 
         <button
-          className="sm:block md:block lg:hidden text-white focus:outline-none"
+          className="sm:block md:hidden lg:hidden text-white focus:outline-none"
           onClick={toggleMenu}
         >
           <span className="text-xl">&#9776;</span>
