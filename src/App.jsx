@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -11,9 +11,24 @@ import ModeOfTransportation from "./Pages/ModeOfTransportation";
 import TricRoute from "./Pages/TricRoute";
 import WalkingPath from "./Pages/WalkingPath";
 import NavBar from "./Components/NavBar";
-import Settings from "./Pages/Settings"; // Import Settings page
+import Settings from "./Pages/Settings";
+import LoadingScreen from "./Components/LoadingScreen";
 
 const App = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+
   return (
     <Router>
       <NavBar />
