@@ -21,10 +21,9 @@ const LoadingScreen = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-black">
-      <div className="relative ml-12 flex justify-center items-center w-full h-full">
-        {/* Background with subtle blur */}
+      <div className="relative  flex justify-center items-center w-full h-full">
+        \
         <div className="absolute inset-0 bg-black opacity-90 backdrop-blur-md"></div>
-
         <img
           src="/CabuTrans.png"
           alt="CabuTrans Logo"
@@ -34,7 +33,6 @@ const LoadingScreen = () => {
             isLogoOut ? "translate-x-[-150%]" : ""
           }`}
         />
-
         <h1
           className={`absolute text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white transition-all duration-1000 ease-in-out ${
             isLogoOut
