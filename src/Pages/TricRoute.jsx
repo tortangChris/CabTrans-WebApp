@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Info } from "lucide-react";
-import { GoogleMap, useLoadScript } from "@react-google-maps/api";
+import { GoogleMap, useLoadScript, MarkerF, InfoWindowF } from "@react-google-maps/api";
 
 const TricyclePath = () => {
   const navigate = useNavigate();
@@ -55,6 +55,30 @@ const TricyclePath = () => {
       image: "/Tricycle.png",
     },
   ];
+  const markers = [
+    {
+      id:1,
+      name: "Katapatan HighWay",
+      position:{ lat:14.256452563952442, lng: 121.12896323573172},
+    },
+    {
+      id:2,
+      name: "Katapatan Railway",
+      position:{ lat:14.25766756633873, lng:121.13510564019286},
+    },
+    {
+      id:3,
+      name: "PNC",
+      position:{ lat:14.259241501566798, lng:121.13406361231847},
+    }
+  ];
+  const [activeMarker, setActiveMarker] = useState(null);
+  const handleActiveMarker = (marker) => {
+    if (marker === activeMarker) {
+      return;
+    }
+    setActiveMarker(marker);
+  };
 
   return (
     <div className="bg-gray-100 min-h-screen px-4 py-6 flex flex-col">
@@ -80,13 +104,30 @@ const TricyclePath = () => {
           <div className="h-full bg-gray-400 flex items-center justify-center text-white font-bold">
             {isLoaded ? (
               <GoogleMap
-                center={{ lat: 14.25958990208862, lng: 121.13384390178402 }}
-                zoom={17}
+                center={{ lat: 14.258117975456784, lng: 121.13233794156204 }} 
+                onClick={() => setActiveMarker(null)}
+                zoom={16.2}
                 mapContainerStyle={{
                   width: "100%",
                   height: "100%",
                 }}
-              ></GoogleMap>
+              >
+                {
+                  markers.map(({ id, name, position}) =>(
+                    <MarkerF
+                    key={id}
+                    position={position}
+                    onClick={() => handleActiveMarker(id)}>
+                      {
+                        activeMarker === id ? <InfoWindowF onCloseClick={()=>setActiveMarker(null)}>
+                          <div>
+                            {name}
+                          </div>
+                        </InfoWindowF> : null}
+                    </MarkerF>
+                  ))
+                }
+              </GoogleMap>
             ) : null}
           </div>
         </div>
