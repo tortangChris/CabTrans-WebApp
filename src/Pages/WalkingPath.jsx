@@ -54,10 +54,10 @@ const WalkingPath = () => {
         </div>
 
         <div className="w-full text-center text-gray-700 mt-4 px-4">
-          <div className="flex items-center justify-center space-x-2">
-            <Info size={24} className="text-blue-500" />
-            <p className="text-lg font-semibold">
-              <span className="text-gray-900 font-bold">Note:</span> Please
+          <div className="w-full bg-gray-800 text-white p-4 rounded-lg flex items-center text-sm sm:text-base lg:text-lg">
+            <Info size={16} className="mr-2 sm:size-20 lg:size-24" />
+            <p className="text-sm sm:text-base lg:text-lg">
+              <span className="text-black-900 font-bold">Note:</span> Please
               follow the highlighted path on the map to reach your destination.
             </p>
           </div>
