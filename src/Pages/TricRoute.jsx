@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Info } from "lucide-react"; // Add Info icon
-import { GoogleMap, useLoadScript } from '@react-google-maps/api';
+import { ArrowLeft, Info } from "lucide-react";
+import { GoogleMap, useLoadScript } from "@react-google-maps/api";
 
 const TricyclePath = () => {
   const navigate = useNavigate();
@@ -18,8 +18,8 @@ const TricyclePath = () => {
   };
 
   const { isLoaded } = useLoadScript({
-      googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY
-    });
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY,
+  });
 
   const routes = [
     {
@@ -63,76 +63,78 @@ const TricyclePath = () => {
         </h1>
       </div>
 
-      <div className="container mx-auto bg-white shadow-lg rounded-lg p-6 flex flex-col items-center space-y-4 flex-grow max-h-screen">
+      <div className="container mx-auto bg-white shadow-lg rounded-lg p-6 flex flex-col items-center space-y-4 flex-grow">
         <div className="w-full h-60 sm:h-72 md:h-[450px] lg:h-[400px] bg-gray-300 rounded-lg mb-4">
-          <div className="h-full bg-gray-400 flex items-center justify-center text-white font-bold">
-                { 
-                  isLoaded ?(
-                    <GoogleMap
-                center={{ lat: 14.25958990208862, lng: 121.13384390178402}}
-                zoom={17}
-                mapContainerStyle={{
-                  width: "100%",
-                  height: "46vh",
-                }}
-                >
-                </GoogleMap>
-                  ) : null
-                }
+          {isLoaded ? (
+            <GoogleMap
+              center={{ lat: 14.25958990208862, lng: 121.13384390178402 }}
+              zoom={17}
+              mapContainerStyle={{
+                width: "100%",
+                height: "100%",
+              }}
+            ></GoogleMap>
+          ) : (
+            <div className="h-full bg-gray-400 flex items-center justify-center text-white font-bold">
+              Loading Map...
+            </div>
+          )}
+        </div>
+
+        <div className="w-full flex flex-col space-y-4">
+          {/* Info Section */}
+          <div className="w-full bg-gray-800 text-white p-4 rounded-lg flex items-center">
+            <Info size={24} className="mr-2" />
+            <span>Please select a route from the list below to proceed.</span>
           </div>
-        </div>
 
-        <div className="w-full bg-gray-800 text-white p-4 mb-4 rounded-lg flex items-center">
-          <Info size={24} className="mr-2" />
-          <span>Please select a route from the list below to proceed.</span>
-        </div>
-
-        <div className="w-full bg-white shadow-md rounded-lg p-4 mb-4">
-          <h2 className="text-lg sm:text-xl md:text-2xl font-semibold mb-4">
-            Select a Route:
-          </h2>
-          {routes.map((route) => (
-            <button
-              key={route.id}
-              className={`w-full flex justify-between items-center p-4 mb-2 rounded-lg text-left font-semibold transition ${
-                selectedRoute === route.name
-                  ? "bg-black text-white"
-                  : "bg-gray-200 hover:bg-gray-300"
-              }`}
-              onClick={() => handleRouteClick(route.name)}
-            >
-              <div className="flex items-center space-x-4">
-                <div className="relative w-16 h-16 flex items-center justify-center">
-                  <div className="absolute w-12 h-12 rounded-full bg-white shadow-md"></div>
-                  <img
-                    src="/Tricycle.png"
-                    alt="Tricycle"
-                    className="w-24 h-24 object-contain z-10 border-white rounded-full"
-                  />
+          <div className="w-full bg-white shadow-md rounded-lg p-4">
+            <h2 className="text-lg sm:text-xl md:text-2xl font-semibold mb-4">
+              Select a Route:
+            </h2>
+            {routes.map((route) => (
+              <button
+                key={route.id}
+                className={`w-full flex justify-between items-center p-4 mb-2 rounded-lg text-left font-semibold transition ${
+                  selectedRoute === route.name
+                    ? "bg-black text-white"
+                    : "bg-gray-200 hover:bg-gray-300"
+                }`}
+                onClick={() => handleRouteClick(route.name)}
+              >
+                <div className="flex items-center space-x-4">
+                  <div className="relative w-16 h-16 flex items-center justify-center">
+                    <div className="absolute w-12 h-12 rounded-full bg-white shadow-md"></div>
+                    <img
+                      src="/Tricycle.png"
+                      alt="Tricycle"
+                      className="w-24 h-24 object-contain z-10 border-white rounded-full"
+                    />
+                  </div>
+                  <span className="font-medium text-lg sm:text-m md:text-lg">
+                    {route.name}
+                  </span>
                 </div>
-                <span className="font-medium text-lg sm:text-m md:text-lg">
-                  {route.name}
-                </span>
-              </div>
-              <div className="text-right">
-                <span className="block">{route.price}</span>
-                <span className="block">{route.time}</span>
-              </div>
-            </button>
-          ))}
-        </div>
+                <div className="text-right">
+                  <span className="block">{route.price}</span>
+                  <span className="block">{route.time}</span>
+                </div>
+              </button>
+            ))}
+          </div>
 
-        <div className="w-full flex justify-center mt-auto">
-          <button
-            className={`w-full sm:w-72 md:w-96 lg:w-300 py-3 px-8 ${
-              selectedRoute
-                ? "bg-black hover:bg-gray-800"
-                : "bg-gray-400 cursor-not-allowed"
-            } text-white font-bold rounded-lg transition`}
-            disabled={!selectedRoute}
-          >
-            Confirm
-          </button>
+          <div className="w-full flex mt-12 justify-center">
+            <button
+              className={`w-full sm:w-72 md:w-96 lg:w-300 py-3 px-8 ${
+                selectedRoute
+                  ? "bg-black hover:bg-gray-800"
+                  : "bg-gray-400 cursor-not-allowed"
+              } text-white font-bold rounded-lg transition`}
+              disabled={!selectedRoute}
+            >
+              Confirm
+            </button>
+          </div>
         </div>
       </div>
     </div>
