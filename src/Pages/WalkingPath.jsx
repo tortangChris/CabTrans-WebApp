@@ -37,7 +37,7 @@ const WalkingPath = () => {
         </h1>
       </div>
 
-      <div className="container mx-auto bg-white shadow-lg rounded-lg p-10 flex flex-col items-center justify-between space-y-4 flex-grow max-h-screen">
+      <div className="container mx-auto bg-white shadow-lg rounded-lg p-6 flex flex-col items-center justify-between space-y-4 flex-grow max-h-screen">
         <div className="w-full h-120 sm:h-66 md:h-[450px] lg:h-[400px] bg-gray-300 rounded-lg mb-4">
           <div className="h-full bg-gray-400 flex items-center justify-center text-white font-bold">
             {isLoaded ? (
@@ -53,7 +53,7 @@ const WalkingPath = () => {
           </div>
         </div>
 
-        <div className="w-full text-center text-gray-700 mt-4 px-4">
+        <div className="w-full text-center text-gray-700 mt-4">
           <div className="w-full bg-gray-800 text-white p-4 rounded-lg flex items-center text-sm sm:text-base lg:text-lg">
             <Info size={16} className="mr-2 sm:size-20 lg:size-24" />
             <p className="text-sm sm:text-base lg:text-lg">
