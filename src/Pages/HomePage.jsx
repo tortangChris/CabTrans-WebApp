@@ -48,7 +48,13 @@ const HomePage = () => {
                 zoom={17}
                 mapContainerStyle={{
                   width: "100%",
-                  height: "30vh",
+                  height: "38vh",
+                }}
+                options={{
+                  fullscreenControl: false,
+                  zoomControl: false,
+                  mapTypeControl: false,
+                  streetViewControl: false
                 }}
               ></GoogleMap>
             ) : null}

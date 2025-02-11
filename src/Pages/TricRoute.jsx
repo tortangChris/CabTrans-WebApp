@@ -73,6 +73,10 @@ const TricyclePath = () => {
                 width: "100%",
                 height: "100%",
               }}
+              options={{
+                fullscreenControl: false,
+                streetViewControl: false
+              }}
             ></GoogleMap>
           ) : (
             <div className="h-full bg-gray-400 flex items-center justify-center text-white font-bold">

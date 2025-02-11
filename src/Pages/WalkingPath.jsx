@@ -49,6 +49,10 @@ const WalkingPath = () => {
                   width: "100%",
                   height: "46vh",
                 }}
+                options={{
+                  fullscreenControl: false,
+                  zoomControl: false
+                }}
                 >
                 </GoogleMap>
                   ) : null
