@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Info } from "lucide-react";
-import { GoogleMap, useLoadScript } from '@react-google-maps/api';
+import { GoogleMap, useLoadScript } from "@react-google-maps/api";
 
 const WalkingPath = () => {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ const WalkingPath = () => {
   };
 
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY,
   });
 
   return (
@@ -40,23 +40,16 @@ const WalkingPath = () => {
       <div className="container mx-auto bg-white shadow-lg rounded-lg p-10 flex flex-col items-center justify-between space-y-4 flex-grow max-h-screen">
         <div className="w-full h-120 sm:h-66 md:h-[450px] lg:h-[400px] bg-gray-300 rounded-lg mb-4">
           <div className="h-full bg-gray-400 flex items-center justify-center text-white font-bold">
-          { 
-                  isLoaded ?(
-                    <GoogleMap
-                center={{ lat: 14.25958990208862, lng: 121.13384390178402}}
+            {isLoaded ? (
+              <GoogleMap
+                center={{ lat: 14.25958990208862, lng: 121.13384390178402 }}
                 zoom={17}
                 mapContainerStyle={{
                   width: "100%",
-                  height: "46vh",
+                  height: "100%",
                 }}
-                options={{
-                  fullscreenControl: false,
-                  zoomControl: false
-                }}
-                >
-                </GoogleMap>
-                  ) : null
-                }
+              ></GoogleMap>
+            ) : null}
           </div>
         </div>
 
