@@ -1,20 +1,29 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Info } from "lucide-react";
-import { GoogleMap, useLoadScript, MarkerF, InfoWindowF } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  useLoadScript,
+  MarkerF,
+  InfoWindowF,
+} from "@react-google-maps/api";
 
 const TricyclePath = () => {
   const navigate = useNavigate();
   const [selectedRoute, setSelectedRoute] = useState(null);
+  const [activeMarker, setActiveMarker] = useState(null);
 
-  const handleBack = () => {
-    navigate(-1);
-  };
+  const handleBack = () => navigate(-1);
 
   const handleRouteClick = (routeName) => {
     setSelectedRoute((prevRoute) =>
       prevRoute === routeName ? null : routeName
     );
+  };
+
+  const handleActiveMarker = (marker) => {
+    if (marker === activeMarker) return;
+    setActiveMarker(marker);
   };
 
   const { isLoaded } = useLoadScript({
@@ -55,41 +64,33 @@ const TricyclePath = () => {
       image: "/Tricycle.png",
     },
   ];
+
   const markers = [
     {
-      id:1,
-      name: "Katapatan HighWay",
-      position:{ lat:14.256452563952442, lng: 121.12896323573172},
+      id: 1,
+      name: "Katapatan Highway",
+      position: { lat: 14.256452563952442, lng: 121.12896323573172 },
     },
     {
-      id:2,
+      id: 2,
       name: "Katapatan Railway",
-      position:{ lat:14.25766756633873, lng:121.13510564019286},
+      position: { lat: 14.25766756633873, lng: 121.13510564019286 },
     },
     {
-      id:3,
-      name: "PNC",
-      position:{ lat:14.259241501566798, lng:121.13406361231847},
-    }
+      id: 3,
+      name: "Pamantasan ng Cabuyao (PNC)",
+      position: { lat: 14.259241501566798, lng: 121.13406361231847 },
+    },
   ];
-  const [activeMarker, setActiveMarker] = useState(null);
-  const handleActiveMarker = (marker) => {
-    if (marker === activeMarker) {
-      return;
-    }
-    setActiveMarker(marker);
-  };
 
   return (
     <div className="bg-gray-100 min-h-screen px-4 py-6 flex flex-col">
+      {/* Header Section */}
       <div className="container flex items-center mx-auto bg-white shadow-lg rounded-lg mb-6 p-4">
         <button
           className="flex items-center justify-center bg-gray-200 rounded-full hover:bg-gray-300 transition"
           onClick={handleBack}
-          style={{
-            width: "3.5rem",
-            height: "3.5rem",
-          }}
+          style={{ width: "3.5rem", height: "3.5rem" }}
         >
           <ArrowLeft size={24} />
         </button>
@@ -99,37 +100,33 @@ const TricyclePath = () => {
       </div>
 
       <div className="container mx-auto bg-white shadow-lg rounded-lg p-6 flex flex-col space-y-4 flex-grow">
-        {/* Map Section */}
         <div className="w-full h-60 sm:h-72 md:h-[450px] lg:h-[400px] bg-gray-300 rounded-lg mb-4">
-          <div className="h-full bg-gray-400 flex items-center justify-center text-white font-bold">
-            {isLoaded ? (
-              <GoogleMap
-                center={{ lat: 14.258117975456784, lng: 121.13233794156204 }} 
-                onClick={() => setActiveMarker(null)}
-                zoom={16.2}
-                mapContainerStyle={{
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                {
-                  markers.map(({ id, name, position}) =>(
-                    <MarkerF
-                    key={id}
-                    position={position}
-                    onClick={() => handleActiveMarker(id)}>
-                      {
-                        activeMarker === id ? <InfoWindowF onCloseClick={()=>setActiveMarker(null)}>
-                          <div>
-                            {name}
-                          </div>
-                        </InfoWindowF> : null}
-                    </MarkerF>
-                  ))
-                }
-              </GoogleMap>
-            ) : null}
-          </div>
+          {isLoaded ? (
+            <GoogleMap
+              center={{ lat: 14.258117975456784, lng: 121.13233794156204 }}
+              zoom={16.2}
+              onClick={() => setActiveMarker(null)}
+              mapContainerStyle={{ width: "100%", height: "100%" }}
+            >
+              {markers.map(({ id, name, position }) => (
+                <MarkerF
+                  key={id}
+                  position={position}
+                  onClick={() => handleActiveMarker(id)}
+                >
+                  {activeMarker === id && (
+                    <InfoWindowF onCloseClick={() => setActiveMarker(null)}>
+                      <div>{name}</div>
+                    </InfoWindowF>
+                  )}
+                </MarkerF>
+              ))}
+            </GoogleMap>
+          ) : (
+            <div className="h-full bg-gray-400 flex items-center justify-center text-white font-bold">
+              Loading Map...
+            </div>
+          )}
         </div>
 
         <div className="w-full flex flex-col space-y-4">
@@ -162,7 +159,6 @@ const TricyclePath = () => {
                       className="w-full h-full object-contain z-10 border-white rounded-full"
                     />
                   </div>
-
                   <div className="flex-1">
                     <span className="block font-medium text-[14px] sm:text-lg">
                       {route.name}
@@ -171,7 +167,6 @@ const TricyclePath = () => {
                       {route.description}
                     </p>
                   </div>
-
                   <div className="text-right text-[14px] sm:text-base">
                     <span className="block">{route.price}</span>
                     <span className="block">{route.time}</span>
