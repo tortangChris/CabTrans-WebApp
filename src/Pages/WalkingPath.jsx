@@ -1,16 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Info } from "lucide-react";
-import {
-  GoogleMap,
-  useLoadScript,
-  MarkerF,
-  InfoWindowF,
-} from "@react-google-maps/api";
+import { GoogleMap, useLoadScript, Circle } from "@react-google-maps/api";
 
 const WalkingPath = () => {
   const navigate = useNavigate();
   const [isDone, setIsDone] = useState(false);
+  const [currentLocation, setCurrentLocation] = useState(null);
 
   const handleBack = () => {
     navigate(-1);
@@ -24,30 +20,21 @@ const WalkingPath = () => {
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY,
   });
 
-  const markers = [
-    {
-      id: 1,
-      name: "Katapatan Highway",
-      position: { lat: 14.255870521797727, lng: 121.12836709719063 },
-    },
-    {
-      id: 2,
-      name: "Katapatan Exit",
-      position: { lat: 14.25763752585572, lng: 121.13535248778192 },
-    },
-    {
-      id: 3,
-      name: "PNC",
-      position: { lat: 14.259199245595466, lng: 121.1338558633464 },
-    },
-  ];
-  const [activeMarker, setActiveMarker] = useState(null);
-  const handleActiveMarker = (marker) => {
-    if (marker === activeMarker) {
-      return;
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setCurrentLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+        },
+        (error) => {
+          console.error("Error fetching location:", error);
+        }
+      );
     }
-    setActiveMarker(marker);
-  };
+  }, []);
 
   return (
     <div className="bg-gray-100 min-h-screen px-4 py-6 flex flex-col">
@@ -70,29 +57,26 @@ const WalkingPath = () => {
       <div className="container mx-auto bg-white shadow-lg rounded-lg p-6 flex flex-col items-center justify-between space-y-4 flex-grow max-h-screen">
         <div className="w-full h-120 sm:h-66 md:h-[450px] lg:h-[400px] bg-gray-300 rounded-lg mb-4">
           <div className="h-full bg-gray-400 flex items-center justify-center text-white font-bold">
-            {isLoaded ? (
+            {isLoaded && currentLocation ? (
               <GoogleMap
-                center={{ lat: 14.257758225621316, lng: 121.13209697670491 }}
-                onClick={() => setActiveMarker(null)}
+                center={currentLocation}
                 zoom={17}
                 mapContainerStyle={{
                   width: "100%",
                   height: "100%",
                 }}
               >
-                {markers.map(({ id, name, position }) => (
-                  <MarkerF
-                    key={id}
-                    position={position}
-                    onClick={() => handleActiveMarker(id)}
-                  >
-                    {activeMarker === id ? (
-                      <InfoWindowF onCloseClick={() => setActiveMarker(null)}>
-                        <div>{name}</div>
-                      </InfoWindowF>
-                    ) : null}
-                  </MarkerF>
-                ))}
+                <Circle
+                  center={currentLocation}
+                  radius={10}
+                  options={{
+                    fillColor: "blue",
+                    fillOpacity: 0.5,
+                    strokeColor: "blue",
+                    strokeOpacity: 1,
+                    strokeWeight: 2,
+                  }}
+                />
               </GoogleMap>
             ) : null}
           </div>
@@ -100,7 +84,7 @@ const WalkingPath = () => {
 
         <div className="w-full text-center text-gray-700 mt-4">
           <div className="w-full bg-gray-800 text-white p-4 rounded-lg flex items-center text-sm sm:text-base lg:text-lg">
-            <Info size={16} className="mr-2 sm:size-20 lg:size-6" />
+            <Info size={16} className="mr-2 sm:size-20 lg:size-24" />
             <p className="text-sm sm:text-base lg:text-lg">
               <span className="text-black-900 font-bold">Note:</span> Please
               follow the highlighted path on the map to reach your destination.

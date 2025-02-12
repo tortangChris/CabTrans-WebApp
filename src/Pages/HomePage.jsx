@@ -5,13 +5,14 @@ import {
   useLoadScript,
   MarkerF,
   InfoWindowF,
+  CircleF,
 } from "@react-google-maps/api";
 
 const HomePage = () => {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [currentLocation, setCurrentLocation] = useState(null);
-  const [mapCenter, setMapCenter] = useState({ lat: 14.5995, lng: 120.9842 }); // Default center (Manila)
-  const [activeMarker, setActiveMarker] = useState(null); // Track active marker
+  const [mapCenter, setMapCenter] = useState({ lat: 14.5995, lng: 120.9842 });
+  const [activeMarker, setActiveMarker] = useState(null);
   const navigate = useNavigate();
 
   const toggleDropdown = (item) => {
@@ -22,12 +23,10 @@ const HomePage = () => {
     navigate("/mode-of-transport");
   };
 
-  // Google Maps script loading
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY,
   });
 
-  // Request current location when the component mounts
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -88,13 +87,12 @@ const HomePage = () => {
                   height: "100%",
                 }}
               >
-                {/* Add a circle marker at the user's location */}
                 <MarkerF
                   position={currentLocation}
                   onClick={() => handleActiveMarker("currentLocation")}
                   icon={{
                     path: google.maps.SymbolPath.CIRCLE,
-                    fillColor: "#0000FF", // Blue color for starting marker
+                    fillColor: "#0000FF", // Blue color
                     fillOpacity: 1,
                     scale: 7,
                     strokeColor: "#FFFFFF",
@@ -107,6 +105,17 @@ const HomePage = () => {
                     </InfoWindowF>
                   )}
                 </MarkerF>
+                <CircleF
+                  center={currentLocation}
+                  radius={20}
+                  options={{
+                    fillColor: "#0000FF",
+                    fillOpacity: 0.2,
+                    strokeColor: "#0000FF",
+                    strokeOpacity: 0.4,
+                    strokeWeight: 2,
+                  }}
+                />
               </GoogleMap>
             ) : (
               <p>Loading your location...</p>
