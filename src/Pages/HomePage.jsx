@@ -1,9 +1,16 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { GoogleMap, useLoadScript } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  useLoadScript,
+  MarkerF,
+  Circle,
+} from "@react-google-maps/api";
 
 const HomePage = () => {
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const [currentLocation, setCurrentLocation] = useState(null);
+  const [mapCenter, setMapCenter] = useState({ lat: 14.5995, lng: 120.9842 }); // Default center (Manila)
   const navigate = useNavigate();
 
   const toggleDropdown = (item) => {
@@ -13,9 +20,34 @@ const HomePage = () => {
   const handleGetStarted = () => {
     navigate("/mode-of-transport");
   };
+
+  // Google Maps script loading
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY,
   });
+
+  // Request current location when the component mounts
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setCurrentLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+          setMapCenter({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+        },
+        () => {
+          alert("Permission to access location was denied.");
+        }
+      );
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
+  }, []);
 
   return (
     <div className="bg-gray-100 min-h-screen px-4 py-6">
@@ -42,16 +74,34 @@ const HomePage = () => {
       <div className="container p-4 mx-auto bg-white shadow-lg rounded-lg mb-6">
         <div className="bg-gray-100 p-4 rounded-lg mb-4 shadow-sm">
           <div className="bg-gray-500 h-64 rounded-lg">
-            {isLoaded ? (
+            {isLoaded && currentLocation ? (
               <GoogleMap
-                center={{ lat: 14.25958990208862, lng: 121.13384390178402 }}
+                center={mapCenter}
                 zoom={17}
                 mapContainerStyle={{
                   width: "100%",
                   height: "100%",
                 }}
-              ></GoogleMap>
-            ) : null}
+              >
+                {/* Add a marker at the user's location */}
+                <MarkerF position={currentLocation} />
+
+                {/* Add a circle around the user's location */}
+                <Circle
+                  center={currentLocation}
+                  radius={50} // Adjust the radius as needed
+                  options={{
+                    fillColor: "rgba(0, 0, 255, 0.2)",
+                    fillOpacity: 0.5,
+                    strokeColor: "blue",
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                  }}
+                />
+              </GoogleMap>
+            ) : (
+              <p>Loading your location...</p>
+            )}
           </div>
         </div>
         <button
