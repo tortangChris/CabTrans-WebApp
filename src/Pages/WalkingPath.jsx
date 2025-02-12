@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Info } from "lucide-react";
-import { GoogleMap, useLoadScript, MarkerF, InfoWindowF } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  useLoadScript,
+  MarkerF,
+  InfoWindowF,
+} from "@react-google-maps/api";
 
 const WalkingPath = () => {
   const navigate = useNavigate();
@@ -21,20 +26,20 @@ const WalkingPath = () => {
 
   const markers = [
     {
-      id:1,
+      id: 1,
       name: "Katapatan Highway",
-      position:{ lat: 14.255870521797727, lng: 121.12836709719063},  
+      position: { lat: 14.255870521797727, lng: 121.12836709719063 },
     },
     {
-      id:2,
+      id: 2,
       name: "Katapatan Exit",
-      position:{ lat:14.25763752585572, lng:121.13535248778192},  
+      position: { lat: 14.25763752585572, lng: 121.13535248778192 },
     },
     {
-      id:3,
-      name: "PNC", 
-      position:{lat: 14.259199245595466, lng: 121.1338558633464},
-    }
+      id: 3,
+      name: "PNC",
+      position: { lat: 14.259199245595466, lng: 121.1338558633464 },
+    },
   ];
   const [activeMarker, setActiveMarker] = useState(null);
   const handleActiveMarker = (marker) => {
@@ -75,21 +80,19 @@ const WalkingPath = () => {
                   height: "100%",
                 }}
               >
-                {
-                  markers.map(({ id, name, position}) =>(
-                    <MarkerF
+                {markers.map(({ id, name, position }) => (
+                  <MarkerF
                     key={id}
                     position={position}
-                    onClick={() => handleActiveMarker(id)}>
-                      {
-                        activeMarker === id ? <InfoWindowF onCloseClick={()=>setActiveMarker(null)}>
-                          <div>
-                            {name}
-                          </div>
-                        </InfoWindowF> : null}
-                    </MarkerF>
-                  ))
-                }
+                    onClick={() => handleActiveMarker(id)}
+                  >
+                    {activeMarker === id ? (
+                      <InfoWindowF onCloseClick={() => setActiveMarker(null)}>
+                        <div>{name}</div>
+                      </InfoWindowF>
+                    ) : null}
+                  </MarkerF>
+                ))}
               </GoogleMap>
             ) : null}
           </div>
@@ -97,7 +100,7 @@ const WalkingPath = () => {
 
         <div className="w-full text-center text-gray-700 mt-4">
           <div className="w-full bg-gray-800 text-white p-4 rounded-lg flex items-center text-sm sm:text-base lg:text-lg">
-            <Info size={16} className="mr-2 sm:size-20 lg:size-24" />
+            <Info size={16} className="mr-2 sm:size-20 lg:size-6" />
             <p className="text-sm sm:text-base lg:text-lg">
               <span className="text-black-900 font-bold">Note:</span> Please
               follow the highlighted path on the map to reach your destination.
