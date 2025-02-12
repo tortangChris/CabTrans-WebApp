@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Info } from "lucide-react";
 import {
@@ -6,24 +6,42 @@ import {
   useLoadScript,
   MarkerF,
   InfoWindowF,
+  PolylineF,
 } from "@react-google-maps/api";
 
 const TricyclePath = () => {
   const navigate = useNavigate();
   const [selectedRoute, setSelectedRoute] = useState(null);
   const [activeMarker, setActiveMarker] = useState(null);
+  const [routePath, setRoutePath] = useState(null);
 
-  const handleBack = () => navigate(-1);
-
-  const handleRouteClick = (routeName) => {
-    setSelectedRoute((prevRoute) =>
-      prevRoute === routeName ? null : routeName
-    );
+  const handleBack = () => {
+    navigate(-1);
   };
 
-  const handleActiveMarker = (marker) => {
-    if (marker === activeMarker) return;
-    setActiveMarker(marker);
+  const handleRouteClick = (routeName, start, end) => {
+    setSelectedRoute(routeName === selectedRoute ? null : routeName);
+    fetchRoute(start, end); // Fetch route when a route is clicked
+    setActiveMarker(null);
+  };
+
+  const fetchRoute = (start, end) => {
+    const directionsService = new window.google.maps.DirectionsService();
+
+    const request = {
+      origin: start,
+      destination: end,
+      travelMode: window.google.maps.TravelMode.DRIVING,
+    };
+
+    directionsService.route(request, (result, status) => {
+      if (status === "OK") {
+        const path = result.routes[0].overview_path;
+        setRoutePath(path); // Update the polyline path
+      } else {
+        console.error("Directions request failed due to " + status);
+      }
+    });
   };
 
   const { isLoaded } = useLoadScript({
@@ -36,61 +54,108 @@ const TricyclePath = () => {
       name: "Route 1",
       description: "Katapatan Highway to Katapatan Railway",
       price: "₱12 - ₱60",
-      time: "10 min.",
+      time: "5 min.",
       image: "/Tricycle.png",
+      markers: [
+        {
+          id: 1,
+          name: "Katapatan Highway",
+          position: { lat: 14.256452563952442, lng: 121.12896323573172 },
+        },
+        {
+          id: 2,
+          name: "Katapatan Railway",
+          position: { lat: 14.25766756633873, lng: 121.13510564019286 },
+        },
+      ],
+      start: { lat: 14.256452563952442, lng: 121.12896323573172 },
+      end: { lat: 14.25766756633873, lng: 121.13510564019286 },
     },
     {
       id: 2,
       name: "Route 2",
       description: "Katapatan Railway to Katapatan Highway",
       price: "₱12 - ₱60",
-      time: "10 min.",
+      time: "5 min.",
       image: "/Tricycle.png",
+      markers: [
+        {
+          id: 1,
+          name: "Katapatan Railway",
+          position: { lat: 14.25766756633873, lng: 121.13510564019286 },
+        },
+        {
+          id: 2,
+          name: "Katapatan Highway",
+          position: { lat: 14.256452563952442, lng: 121.12896323573172 },
+        },
+      ],
+      start: { lat: 14.25766756633873, lng: 121.13510564019286 },
+      end: { lat: 14.256452563952442, lng: 121.12896323573172 },
     },
     {
       id: 3,
       name: "Route 3",
       description: "PNC to Katapatan Highway",
       price: "₱12 - ₱60",
-      time: "5 min.",
+      time: "8 min.",
       image: "/Tricycle.png",
+      markers: [
+        {
+          id: 1,
+          name: "PNC",
+          position: { lat: 14.259241501566798, lng: 121.13406361231847 },
+        },
+        {
+          id: 2,
+          name: "Katapatan Highway",
+          position: { lat: 14.256452563952442, lng: 121.12896323573172 },
+        },
+      ],
+      start: { lat: 14.259241501566798, lng: 121.13406361231847 },
+      end: { lat: 14.256452563952442, lng: 121.12896323573172 },
     },
     {
       id: 4,
       name: "Route 4",
-      description: "Katapatan Highway to PNC",
+      description: "Katapatan Station to Katapatan Mall",
       price: "₱12 - ₱60",
-      time: "5 min.",
+      time: "8 min.",
       image: "/Tricycle.png",
+      markers: [
+        {
+          id: 1,
+          name: "Katapatan Highway",
+          position: { lat: 14.256452563952442, lng: 121.12896323573172 },
+        },
+        {
+          id: 2,
+          name: "PNC",
+          position: { lat: 14.259241501566798, lng: 121.13406361231847 },
+        },
+      ],
+      start: { lat: 14.256452563952442, lng: 121.12896323573172 },
+      end: { lat: 14.259241501566798, lng: 121.13406361231847 },
     },
   ];
 
-  const markers = [
-    {
-      id: 1,
-      name: "Katapatan Highway",
-      position: { lat: 14.256452563952442, lng: 121.12896323573172 },
-    },
-    {
-      id: 2,
-      name: "Katapatan Railway",
-      position: { lat: 14.25766756633873, lng: 121.13510564019286 },
-    },
-    {
-      id: 3,
-      name: "Pamantasan ng Cabuyao (PNC)",
-      position: { lat: 14.259241501566798, lng: 121.13406361231847 },
-    },
-  ];
+  const handleActiveMarker = (marker) => {
+    if (marker === activeMarker) {
+      return;
+    }
+    setActiveMarker(marker);
+  };
 
   return (
     <div className="bg-gray-100 min-h-screen px-4 py-6 flex flex-col">
-      {/* Header Section */}
       <div className="container flex items-center mx-auto bg-white shadow-lg rounded-lg mb-6 p-4">
         <button
           className="flex items-center justify-center bg-gray-200 rounded-full hover:bg-gray-300 transition"
           onClick={handleBack}
-          style={{ width: "3.5rem", height: "3.5rem" }}
+          style={{
+            width: "3.5rem",
+            height: "3.5rem",
+          }}
         >
           <ArrowLeft size={24} />
         </button>
@@ -100,33 +165,51 @@ const TricyclePath = () => {
       </div>
 
       <div className="container mx-auto bg-white shadow-lg rounded-lg p-6 flex flex-col space-y-4 flex-grow">
+        {/* Map Section */}
         <div className="w-full h-60 sm:h-72 md:h-[450px] lg:h-[400px] bg-gray-300 rounded-lg mb-4">
-          {isLoaded ? (
-            <GoogleMap
-              center={{ lat: 14.258117975456784, lng: 121.13233794156204 }}
-              zoom={16.2}
-              onClick={() => setActiveMarker(null)}
-              mapContainerStyle={{ width: "100%", height: "100%" }}
-            >
-              {markers.map(({ id, name, position }) => (
-                <MarkerF
-                  key={id}
-                  position={position}
-                  onClick={() => handleActiveMarker(id)}
-                >
-                  {activeMarker === id && (
-                    <InfoWindowF onCloseClick={() => setActiveMarker(null)}>
-                      <div>{name}</div>
-                    </InfoWindowF>
-                  )}
-                </MarkerF>
-              ))}
-            </GoogleMap>
-          ) : (
-            <div className="h-full bg-gray-400 flex items-center justify-center text-white font-bold">
-              Loading Map...
-            </div>
-          )}
+          <div className="h-full bg-gray-400 flex items-center justify-center text-white font-bold">
+            {isLoaded ? (
+              <GoogleMap
+                center={{ lat: 14.258117975456784, lng: 121.13233794156204 }}
+                onClick={() => setActiveMarker(null)}
+                zoom={16.2}
+                mapContainerStyle={{
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                {selectedRoute &&
+                  routes
+                    .find((route) => route.name === selectedRoute)
+                    .markers.map(({ id, name, position }) => (
+                      <MarkerF
+                        key={id}
+                        position={position}
+                        onClick={() => handleActiveMarker(id)}
+                      >
+                        {activeMarker === id ? (
+                          <InfoWindowF
+                            onCloseClick={() => setActiveMarker(null)}
+                          >
+                            <div>{name}</div>
+                          </InfoWindowF>
+                        ) : null}
+                      </MarkerF>
+                    ))}
+
+                {routePath && (
+                  <PolylineF
+                    path={routePath}
+                    options={{
+                      strokeColor: "#FF0000",
+                      strokeOpacity: 1.0,
+                      strokeWeight: 2,
+                    }}
+                  />
+                )}
+              </GoogleMap>
+            ) : null}
+          </div>
         </div>
 
         <div className="w-full flex flex-col space-y-4">
@@ -149,7 +232,9 @@ const TricyclePath = () => {
                     ? "bg-black text-white"
                     : "bg-gray-200 hover:bg-gray-300"
                 }`}
-                onClick={() => handleRouteClick(route.name)}
+                onClick={() =>
+                  handleRouteClick(route.name, route.start, route.end)
+                }
               >
                 <div className="flex items-center space-x-3 sm:space-x-4 w-full">
                   <div className="relative w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center">
@@ -159,6 +244,7 @@ const TricyclePath = () => {
                       className="w-full h-full object-contain z-10 border-white rounded-full"
                     />
                   </div>
+
                   <div className="flex-1">
                     <span className="block font-medium text-[14px] sm:text-lg">
                       {route.name}
@@ -167,6 +253,7 @@ const TricyclePath = () => {
                       {route.description}
                     </p>
                   </div>
+
                   <div className="text-right text-[14px] sm:text-base">
                     <span className="block">{route.price}</span>
                     <span className="block">{route.time}</span>
