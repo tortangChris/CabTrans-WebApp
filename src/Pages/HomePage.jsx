@@ -4,15 +4,15 @@ import {
   GoogleMap,
   useLoadScript,
   MarkerF,
-  Circle,
   InfoWindowF,
 } from "@react-google-maps/api";
 
 const HomePage = () => {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [currentLocation, setCurrentLocation] = useState(null);
-  const [mapCenter, setMapCenter] = useState({ lat: 14.5995, lng: 120.9842 });
-  const [activeMarker, setActiveMarker] = useState(null);
+  const [mapCenter, setMapCenter] = useState({ lat: 14.5995, lng: 120.9842 }); // Default center (Manila)
+  const [heading, setHeading] = useState(null); // Track device heading
+  const [activeMarker, setActiveMarker] = useState(null); // Track active marker
   const navigate = useNavigate();
 
   const toggleDropdown = (item) => {
@@ -23,6 +23,7 @@ const HomePage = () => {
     navigate("/mode-of-transport");
   };
 
+  // Google Maps script loading
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY,
   });
@@ -48,6 +49,21 @@ const HomePage = () => {
     } else {
       alert("Geolocation is not supported by this browser.");
     }
+  }, []);
+
+  // Detect device heading/orientation
+  useEffect(() => {
+    const handleOrientation = (event) => {
+      const compassHeading = event.alpha; // Heading in degrees
+      setHeading(compassHeading);
+    };
+
+    // Listen to device orientation changes
+    window.addEventListener("deviceorientation", handleOrientation);
+
+    return () => {
+      window.removeEventListener("deviceorientation", handleOrientation);
+    };
   }, []);
 
   const handleActiveMarker = (id) => {
@@ -88,12 +104,13 @@ const HomePage = () => {
                   height: "100%",
                 }}
               >
+                {/* Add a circle marker at the user's location */}
                 <MarkerF
                   position={currentLocation}
                   onClick={() => handleActiveMarker("currentLocation")}
                   icon={{
                     path: google.maps.SymbolPath.CIRCLE,
-                    fillColor: "#0000FF", // Blue color
+                    fillColor: "#0000FF", // Blue color for starting marker
                     fillOpacity: 1,
                     scale: 7,
                     strokeColor: "#FFFFFF",
@@ -106,6 +123,22 @@ const HomePage = () => {
                     </InfoWindowF>
                   )}
                 </MarkerF>
+
+                {/* Show compass arrow indicator */}
+                {heading !== null && (
+                  <MarkerF
+                    position={currentLocation}
+                    icon={{
+                      path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                      fillColor: "#FF0000", // Red color for compass
+                      fillOpacity: 1,
+                      scale: 5,
+                      strokeColor: "#FFFFFF",
+                      strokeWeight: 2,
+                      rotation: heading, // Rotate based on the device's heading
+                    }}
+                  />
+                )}
               </GoogleMap>
             ) : (
               <p>Loading your location...</p>
