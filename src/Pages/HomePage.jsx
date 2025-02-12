@@ -11,7 +11,6 @@ const HomePage = () => {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [currentLocation, setCurrentLocation] = useState(null);
   const [mapCenter, setMapCenter] = useState({ lat: 14.5995, lng: 120.9842 }); // Default center (Manila)
-  const [heading, setHeading] = useState(null); // Track device heading
   const [activeMarker, setActiveMarker] = useState(null); // Track active marker
   const navigate = useNavigate();
 
@@ -49,21 +48,6 @@ const HomePage = () => {
     } else {
       alert("Geolocation is not supported by this browser.");
     }
-  }, []);
-
-  // Detect device heading/orientation
-  useEffect(() => {
-    const handleOrientation = (event) => {
-      const compassHeading = event.alpha; // Heading in degrees
-      setHeading(compassHeading);
-    };
-
-    // Listen to device orientation changes
-    window.addEventListener("deviceorientation", handleOrientation);
-
-    return () => {
-      window.removeEventListener("deviceorientation", handleOrientation);
-    };
   }, []);
 
   const handleActiveMarker = (id) => {
@@ -123,22 +107,6 @@ const HomePage = () => {
                     </InfoWindowF>
                   )}
                 </MarkerF>
-
-                {/* Show compass arrow indicator */}
-                {heading !== null && (
-                  <MarkerF
-                    position={currentLocation}
-                    icon={{
-                      path: "M 0 -10 L 5 10 L -5 10 z", // Triangle path
-                      fillColor: "#FF0000",
-                      fillOpacity: 1,
-                      scale: 2,
-                      strokeColor: "#FFFFFF",
-                      strokeWeight: 1,
-                      rotation: heading,
-                    }}
-                  />
-                )}
               </GoogleMap>
             ) : (
               <p>Loading your location...</p>
