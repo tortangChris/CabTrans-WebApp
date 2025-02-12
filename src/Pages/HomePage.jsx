@@ -5,15 +5,13 @@ import {
   useLoadScript,
   MarkerF,
   CircleF,
-  InfoWindowF,
 } from "@react-google-maps/api";
 
 const HomePage = () => {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [currentLocation, setCurrentLocation] = useState(null);
-  const [mapCenter, setMapCenter] = useState({ lat: 14.5995, lng: 120.9842 });
-  const [heading, setHeading] = useState(null);
-  const [activeMarker, setActiveMarker] = useState(null);
+  const [mapCenter, setMapCenter] = useState({ lat: 14.5995, lng: 120.9842 }); // Default center (Manila)
+  const [heading, setHeading] = useState(null); // Track device heading
   const navigate = useNavigate();
 
   const toggleDropdown = (item) => {
@@ -24,10 +22,12 @@ const HomePage = () => {
     navigate("/mode-of-transport");
   };
 
+  // Google Maps script loading
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY,
   });
 
+  // Request current location when the component mounts
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -50,21 +50,20 @@ const HomePage = () => {
     }
   }, []);
 
+  // Detect device heading/orientation
   useEffect(() => {
     const handleOrientation = (event) => {
-      const compassHeading = event.alpha;
+      const compassHeading = event.alpha; // Heading in degrees
       setHeading(compassHeading);
     };
 
+    // Listen to device orientation changes
     window.addEventListener("deviceorientation", handleOrientation);
+
     return () => {
       window.removeEventListener("deviceorientation", handleOrientation);
     };
   }, []);
-
-  const handleActiveMarker = (id) => {
-    setActiveMarker(id);
-  };
 
   return (
     <div className="bg-gray-100 min-h-screen px-4 py-6">
@@ -100,49 +99,30 @@ const HomePage = () => {
                   height: "100%",
                 }}
               >
+                {/* Add a circle marker at the user's location */}
                 <MarkerF
                   position={currentLocation}
-                  onClick={() => handleActiveMarker("currentLocation")}
                   icon={{
                     path: google.maps.SymbolPath.CIRCLE,
-                    fillColor: "#0000FF",
+                    fillColor: "#0000FF", // Blue color for starting marker
                     fillOpacity: 1,
                     scale: 7,
                     strokeColor: "#FFFFFF",
                     strokeWeight: 2,
                   }}
-                >
-                  {activeMarker === "currentLocation" && (
-                    <InfoWindowF onCloseClick={() => setActiveMarker(null)}>
-                      <div>Your Current Location</div>
-                    </InfoWindowF>
-                  )}
-                </MarkerF>
+                />
 
+                {/* Show light glow effect based on heading */}
                 {heading !== null && (
-                  <>
-                    <MarkerF
-                      position={currentLocation}
-                      icon={{
-                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                        fillColor: "#FF0000",
-                        fillOpacity: 1,
-                        scale: 5,
-                        strokeColor: "#FFFFFF",
-                        strokeWeight: 2,
-                        rotation: heading,
-                      }}
-                    />
-                    <CircleF
-                      center={currentLocation}
-                      radius={50}
-                      options={{
-                        fillColor: "rgba(255, 255, 0, 0.5)",
-                        strokeColor: "yellow",
-                        strokeWeight: 2,
-                      }}
-                    />
-                  </>
+                  <CircleF
+                    center={currentLocation}
+                    radius={30}
+                    options={{
+                      fillColor: "rgba(255, 255, 0, 0.5)", // Yellow glow
+                      strokeColor: "rgba(255, 255, 0, 0.8)",
+                      strokeWeight: 2,
+                    }}
+                  />
                 )}
               </GoogleMap>
             ) : (
