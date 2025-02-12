@@ -21,7 +21,7 @@ const TricyclePath = () => {
 
   const handleRouteClick = (routeName, start, end) => {
     setSelectedRoute(routeName === selectedRoute ? null : routeName);
-    fetchRoute(start, end); // Fetch route when a route is clicked
+    fetchRoute(start, end);
     setActiveMarker(null);
   };
 
@@ -181,11 +181,22 @@ const TricyclePath = () => {
                 {selectedRoute &&
                   routes
                     .find((route) => route.name === selectedRoute)
-                    .markers.map(({ id, name, position }) => (
+                    .markers.map(({ id, name, position }, index) => (
                       <MarkerF
                         key={id}
                         position={position}
                         onClick={() => handleActiveMarker(id)}
+                        icon={{
+                          path:
+                            index === 0
+                              ? google.maps.SymbolPath.CIRCLE
+                              : undefined, // End marker will use default pin icon
+                          fillColor: index === 0 ? "#0000FF" : undefined, // Blue color for starting marker
+                          fillOpacity: 1,
+                          scale: 7,
+                          strokeColor: "#FFFFFF",
+                          strokeWeight: 2,
+                        }}
                       >
                         {activeMarker === id ? (
                           <InfoWindowF
@@ -201,9 +212,9 @@ const TricyclePath = () => {
                   <PolylineF
                     path={routePath}
                     options={{
-                      strokeColor: "#FF0000",
+                      strokeColor: "#0000FF", // Blue trace color
                       strokeOpacity: 1.0,
-                      strokeWeight: 2,
+                      strokeWeight: 5,
                     }}
                   />
                 )}
