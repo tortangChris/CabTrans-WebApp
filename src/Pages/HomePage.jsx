@@ -4,7 +4,7 @@ import {
   GoogleMap,
   useLoadScript,
   MarkerF,
-  CircleF,
+  InfoWindowF,
 } from "@react-google-maps/api";
 
 const HomePage = () => {
@@ -12,6 +12,7 @@ const HomePage = () => {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [mapCenter, setMapCenter] = useState({ lat: 14.5995, lng: 120.9842 }); // Default center (Manila)
   const [heading, setHeading] = useState(null); // Track device heading
+  const [activeMarker, setActiveMarker] = useState(null); // Track active marker
   const navigate = useNavigate();
 
   const toggleDropdown = (item) => {
@@ -65,6 +66,10 @@ const HomePage = () => {
     };
   }, []);
 
+  const handleActiveMarker = (id) => {
+    setActiveMarker(id);
+  };
+
   return (
     <div className="bg-gray-100 min-h-screen px-4 py-6">
       <div className="container p-4 mx-auto bg-white shadow-lg rounded-lg mb-6">
@@ -102,6 +107,7 @@ const HomePage = () => {
                 {/* Add a circle marker at the user's location */}
                 <MarkerF
                   position={currentLocation}
+                  onClick={() => handleActiveMarker("currentLocation")}
                   icon={{
                     path: google.maps.SymbolPath.CIRCLE,
                     fillColor: "#0000FF", // Blue color for starting marker
@@ -110,17 +116,26 @@ const HomePage = () => {
                     strokeColor: "#FFFFFF",
                     strokeWeight: 2,
                   }}
-                />
+                >
+                  {activeMarker === "currentLocation" && (
+                    <InfoWindowF onCloseClick={() => setActiveMarker(null)}>
+                      <div>Your Current Location</div>
+                    </InfoWindowF>
+                  )}
+                </MarkerF>
 
-                {/* Show light glow effect based on heading */}
+                {/* Show compass arrow indicator */}
                 {heading !== null && (
-                  <CircleF
-                    center={currentLocation}
-                    radius={30}
-                    options={{
-                      fillColor: "rgba(255, 255, 0, 0.5)", // Yellow glow
-                      strokeColor: "rgba(255, 255, 0, 0.8)",
-                      strokeWeight: 2,
+                  <MarkerF
+                    position={currentLocation}
+                    icon={{
+                      path: "M 0 -10 L 5 10 L -5 10 z", // Triangle path
+                      fillColor: "#FF0000",
+                      fillOpacity: 1,
+                      scale: 2,
+                      strokeColor: "#FFFFFF",
+                      strokeWeight: 1,
+                      rotation: heading,
                     }}
                   />
                 )}
@@ -136,6 +151,59 @@ const HomePage = () => {
         >
           Get Started
         </button>
+      </div>
+
+      <div className="container p-4 mx-auto bg-white shadow-lg rounded-lg">
+        <h1 className="text-2xl font-bold mb-4">Why Choose CabuTrans?</h1>
+        <div className="mt-6">
+          <div className="bg-gray-50 p-4 rounded-lg mb-4 shadow-md">
+            <button
+              className="flex items-center text-left w-full"
+              onClick={() => toggleDropdown("maps")}
+            >
+              <span className="mr-3">&gt;</span>
+              Easy-to-read maps
+            </button>
+            {activeDropdown === "maps" && (
+              <p className="ml-8 text-gray-600 mt-2">
+                Find your way around with intuitive and clear maps designed for
+                convenience.
+              </p>
+            )}
+          </div>
+
+          <div className="bg-gray-50 p-4 rounded-lg mb-4 shadow-md">
+            <button
+              className="flex items-center text-left w-full"
+              onClick={() => toggleDropdown("updates")}
+            >
+              <span className="mr-3">&gt;</span>
+              Real-Time transport updates
+            </button>
+            {activeDropdown === "updates" && (
+              <p className="ml-8 text-gray-600 mt-2">
+                Stay updated with live transport schedules and delays to save
+                time.
+              </p>
+            )}
+          </div>
+
+          <div className="bg-gray-50 p-4 rounded-lg shadow-md">
+            <button
+              className="flex items-center text-left w-full"
+              onClick={() => toggleDropdown("navigation")}
+            >
+              <span className="mr-3">&gt;</span>
+              Simplified navigation for students and visitors
+            </button>
+            {activeDropdown === "navigation" && (
+              <p className="ml-8 text-gray-600 mt-2">
+                Get step-by-step guidance tailored for students and first-time
+                visitors.
+              </p>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
