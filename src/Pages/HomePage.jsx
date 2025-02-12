@@ -5,12 +5,14 @@ import {
   useLoadScript,
   MarkerF,
   Circle,
+  InfoWindowF,
 } from "@react-google-maps/api";
 
 const HomePage = () => {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [currentLocation, setCurrentLocation] = useState(null);
-  const [mapCenter, setMapCenter] = useState({ lat: 14.5995, lng: 120.9842 }); // Default center (Manila)
+  const [mapCenter, setMapCenter] = useState({ lat: 14.5995, lng: 120.9842 });
+  const [activeMarker, setActiveMarker] = useState(null);
   const navigate = useNavigate();
 
   const toggleDropdown = (item) => {
@@ -21,7 +23,6 @@ const HomePage = () => {
     navigate("/mode-of-transport");
   };
 
-  // Google Maps script loading
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY,
   });
@@ -48,6 +49,10 @@ const HomePage = () => {
       alert("Geolocation is not supported by this browser.");
     }
   }, []);
+
+  const handleActiveMarker = (id) => {
+    setActiveMarker(id);
+  };
 
   return (
     <div className="bg-gray-100 min-h-screen px-4 py-6">
@@ -83,21 +88,24 @@ const HomePage = () => {
                   height: "100%",
                 }}
               >
-                {/* Add a marker at the user's location */}
-                <MarkerF position={currentLocation} />
-
-                {/* Add a circle around the user's location */}
-                <Circle
-                  center={currentLocation}
-                  radius={50} // Adjust the radius as needed
-                  options={{
-                    fillColor: "rgba(0, 0, 255, 0.2)",
-                    fillOpacity: 0.5,
-                    strokeColor: "blue",
-                    strokeOpacity: 0.8,
+                <MarkerF
+                  position={currentLocation}
+                  onClick={() => handleActiveMarker("currentLocation")}
+                  icon={{
+                    path: google.maps.SymbolPath.CIRCLE,
+                    fillColor: "#0000FF", // Blue color
+                    fillOpacity: 1,
+                    scale: 7,
+                    strokeColor: "#FFFFFF",
                     strokeWeight: 2,
                   }}
-                />
+                >
+                  {activeMarker === "currentLocation" && (
+                    <InfoWindowF onCloseClick={() => setActiveMarker(null)}>
+                      <div>Your Current Location</div>
+                    </InfoWindowF>
+                  )}
+                </MarkerF>
               </GoogleMap>
             ) : (
               <p>Loading your location...</p>
